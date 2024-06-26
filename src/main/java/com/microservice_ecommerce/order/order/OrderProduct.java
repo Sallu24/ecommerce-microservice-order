@@ -18,14 +18,14 @@ public class OrderProduct {
     private Long productId;
 
     @Column(name = "unit_price")
-    private Float unitPrice;
+    private Double unitPrice;
 
     private Integer qty;
 
     @Column(name = "line_total")
-    private Float lineTotal;
+    private Double lineTotal;
 
-    public OrderProduct(Long id, Order order, Long productId, Float unitPrice, Integer qty, Float lineTotal) {
+    public OrderProduct(Long id, Order order, Long productId, Double unitPrice, Integer qty, Double lineTotal) {
         this.id = id;
         this.order = order;
         this.productId = productId;
@@ -61,11 +61,11 @@ public class OrderProduct {
         this.productId = productId;
     }
 
-    public Float getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Float unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
@@ -77,11 +77,11 @@ public class OrderProduct {
         this.qty = qty;
     }
 
-    public Float getLineTotal() {
+    public Double getLineTotal() {
         return lineTotal;
     }
 
-    public void setLineTotal(Float lineTotal) {
+    public void setLineTotal(Double lineTotal) {
         this.lineTotal = lineTotal;
     }
 
