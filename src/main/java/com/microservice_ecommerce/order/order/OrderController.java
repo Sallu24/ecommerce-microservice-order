@@ -1,9 +1,7 @@
 package com.microservice_ecommerce.order.order;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,13 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<OrderResponse>> index() {
         return orderService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponse> view(@PathVariable Long id) {
+        OrderResponse orderResponse = orderService.view(id);
+
+        return ResponseEntity.ok(orderResponse);
     }
 
 }

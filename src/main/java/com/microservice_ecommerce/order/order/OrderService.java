@@ -36,6 +36,18 @@ public class OrderService {
         return ResponseEntity.ok(orderResponses);
     }
 
+    protected OrderResponse view(Long orderId) {
+        Order order = findById(orderId);
+
+        return convertToDTO(order);
+    }
+
+    private Order findById(Long id) {
+        return orderRepository
+                .findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("No order found against this id: " + id));
+    }
+
     private OrderResponse convertToDTO(Order order) {
         List<OrderProductResponse> orderProductResponses = new ArrayList<>();
         List<OrderProduct> orderProducts = order.getOrderProducts();

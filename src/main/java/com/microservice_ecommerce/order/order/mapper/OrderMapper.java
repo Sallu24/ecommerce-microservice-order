@@ -17,15 +17,15 @@ public class OrderMapper {
         orderResponse.setSubTotal(order.getSubTotal());
         orderResponse.setShippingMethod(order.getShippingMethod());
         orderResponse.setShippingCost(order.getShippingCost());
-        orderResponse.setCouponId(order.getCouponId());
-        orderResponse.setDiscountId(order.getDiscountId());
+//        orderResponse.setCouponId(order.getCouponId());
+//        orderResponse.setDiscountId(order.getDiscountId());
         orderResponse.setInvoiceNumber(order.getInvoiceNumber());
         orderResponse.setTotal(order.getTotal());
         orderResponse.setPaymentMethod(order.getPaymentMethod());
-        orderResponse.setCurrency(order.getCurrency());
-        orderResponse.setCurrencyRate(order.getCurrencyRate());
+//        orderResponse.setCurrency(order.getCurrency());
+//        orderResponse.setCurrencyRate(order.getCurrencyRate());
         orderResponse.setStatus(order.getStatus());
-        orderResponse.setNote(order.getNote());
+//        orderResponse.setNote(order.getNote());
         orderResponse.setCreatedAt(order.getCreatedAt());
         orderResponse.setUpdatedAt(order.getUpdatedAt());
 

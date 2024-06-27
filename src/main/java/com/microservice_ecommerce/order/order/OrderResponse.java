@@ -29,9 +29,9 @@ public class OrderResponse {
 
     private Float shippingCost;
 
-    private Long couponId;
+//    private Long couponId;
 
-    private Long discountId;
+//    private Long discountId;
 
     private Long invoiceNumber;
 
@@ -39,13 +39,13 @@ public class OrderResponse {
 
     private String paymentMethod;
 
-    private String currency;
+//    private String currency;
 
-    private Float currencyRate;
+//    private Float currencyRate;
 
     private OrderStatus status;
 
-    private String note;
+//    private String note;
 
     private Date createdAt;
 

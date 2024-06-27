@@ -1,5 +1,6 @@
 package com.microservice_ecommerce.order.exception;
 
+import com.microservice_ecommerce.order.order.OrderNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -27,16 +28,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-//    @ExceptionHandler(ProductNotFoundException.class)
-//    public final ResponseEntity<ErrorDetails> handleBrandNotFoundException(Exception ex, WebRequest request) throws Exception {
-//        ErrorDetails errorDetails = new ErrorDetails(
-//                LocalDateTime.now(),
-//                ex.getMessage(),
-//                request.getDescription(false)
-//        );
-//
-//        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(OrderNotFoundException.class)
+    public final ResponseEntity<ErrorDetails> handleOrderNotFoundException(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
