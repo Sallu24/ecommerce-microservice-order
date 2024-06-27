@@ -1,6 +1,11 @@
 package com.microservice_ecommerce.order.order;
 
+import com.microservice_ecommerce.order.order.clients.ProductClient;
+import com.microservice_ecommerce.order.order.clients.UserClient;
+import com.microservice_ecommerce.order.order.external.Product;
+import com.microservice_ecommerce.order.order.external.User;
 import com.microservice_ecommerce.order.order.mapper.OrderMapper;
+import com.microservice_ecommerce.order.order.mapper.OrderProductMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
+    private final UserClient userClient;
     protected OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    protected ProductClient productClient;
+
+    public OrderService(OrderRepository orderRepository, ProductClient productClient, UserClient userClient) {
         this.orderRepository = orderRepository;
+        this.productClient = productClient;
+        this.userClient = userClient;
     }
 
     protected ResponseEntity<List<OrderResponse>> findAll() {
@@ -27,31 +37,30 @@ public class OrderService {
     }
 
     private OrderResponse convertToDTO(Order order) {
-//        List<Category> categories = new ArrayList<>();
+        List<OrderProductResponse> orderProductResponses = new ArrayList<>();
+        List<OrderProduct> orderProducts = order.getOrderProducts();
 
-//        List<CategoryProduct> categoryProducts = product.getCategoryProducts();
+        if (orderProducts != null && !orderProducts.isEmpty()) {
+            orderProductResponses = orderProducts.stream()
+                    .map(orderProduct -> {
+                        Product product = productClient.getProduct(orderProduct.getProductId());
 
-//        if (categoryProducts != null && !categoryProducts.isEmpty()) {
-//            categories = categoryProducts.stream()
-//                    .map(categoryProduct -> {
-//                        Category category = categoryClient.getCategory(categoryProduct.getCategoryId());
-//
-//                        if (category != null) {
-//                            return new Category(category.getId(), category.getName());
-//                        }
-//
-//                        return null;
-//                    })
-//                    .toList();
-//        }
+                        if (product != null) {
+                            return OrderProductMapper.orderProductResponse(orderProduct, product);
+                        }
 
-//        if (product.getBrandId() != null) {
-//            Brand brand = brandClient.getBrand(product.getBrandId());
-//
-//            return ProductMapper.productResponse(product, brand, categories);
-//        }
+                        return null;
+                    })
+                    .toList();
+        }
 
-        return OrderMapper.orderResponse(order);
+        if (order.getCustomerId() != null) {
+            User user = userClient.getUser(order.getCustomerId());
+
+            return OrderMapper.orderResponse(order, user, orderProductResponses);
+        }
+
+        return OrderMapper.orderResponse(order, null, orderProductResponses);
     }
 
 }
