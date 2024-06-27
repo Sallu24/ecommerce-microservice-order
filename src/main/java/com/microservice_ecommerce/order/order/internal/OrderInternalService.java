@@ -5,6 +5,7 @@ import com.microservice_ecommerce.order.order.external.CartItem;
 import com.microservice_ecommerce.order.order.internal.dto.BillingDTO;
 import com.microservice_ecommerce.order.order.internal.dto.OrderDTO;
 import com.microservice_ecommerce.order.order.internal.dto.ShippingDTO;
+import com.microservice_ecommerce.order.order.messaging.OrderMessageProducer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,16 +21,20 @@ public class OrderInternalService {
 
     protected OrderBillingRepository orderBillingRepository;
 
+    protected OrderMessageProducer orderMessageProducer;
+
     public OrderInternalService(
             OrderRepository orderRepository,
             OrderProductRepository orderProductRepository,
             OrderShippingRepository orderShippingRepository,
-            OrderBillingRepository orderBillingRepository
+            OrderBillingRepository orderBillingRepository,
+            OrderMessageProducer orderMessageProducer
     ) {
         this.orderRepository = orderRepository;
         this.orderProductRepository = orderProductRepository;
         this.orderShippingRepository = orderShippingRepository;
         this.orderBillingRepository = orderBillingRepository;
+        this.orderMessageProducer = orderMessageProducer;
     }
 
     protected void createOrder(OrderDTO orderDTO) {
@@ -37,6 +42,7 @@ public class OrderInternalService {
         createOrderItems(order, orderDTO.getCart().getCartItems());
         createOrderShipping(order, orderDTO.getCheckout().getShipping());
         createOrderBilling(order, orderDTO.getCheckout().getBilling());
+        orderMessageProducer.sendMessage(order, orderDTO.getCart());
     }
 
     private Order saveOrder(OrderDTO orderDTO) {
